@@ -1,0 +1,16 @@
+* {
+  box-sizing: border-box;
+  overflow: hidden;
+}
+body {
+  margin: 0;
+  height: 100vh;
+}
+canvas {
+  border: 1px solid #333;
+  display: block;
+  margin: 0 auto;
+  transform: scale(2);
+  transform-origin: top;
+  image-rendering: pixelated;
+}
