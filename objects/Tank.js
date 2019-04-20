@@ -23,7 +23,7 @@ const Tank = function(C, x, y, side) {
     // Tank barrel
     C.beginPath();
     C.moveTo(this.x + 10, this.y - 2);
-    [xdif, ydif] = UTILS.getCanonRelativePosition(12, this.angle, this.side);
+    [xdif, ydif] = UTILS.getAnglePowerDiff(12, this.angle, this.side);
     C.lineTo(this.x + 10 + xdif, this.y - 2 + ydif);
     C.strokeStyle = "#0f0";
     C.stroke();
@@ -39,20 +39,30 @@ const Tank = function(C, x, y, side) {
     C.fillText("Power " + this.power, xPos, fontSize * 3);
   };
 
-  this.aimAndFire = function(e) {
+  this.aimAndFire = function(e, cbWhenFire) {
     e = e || window.event;
     switch (e.keyCode) {
       case 32:
-        console.log("Space");
+        [xdif, ydif] = UTILS.getAnglePowerDiff(12, this.angle, this.side);
+        this.shotOrigin = [this.x + 10 + xdif, this.y - 2 + ydif];
+        cbWhenFire(this.angle, this.power);
         break;
       case 37:
-        if (this.angle < 180) this.angle++;
+        if (
+          (this.angle < 180 && this.side == UTILS.SIDEA) ||
+          (this.angle > 0 && this.side == UTILS.SIDEB)
+        )
+          this.angle += this.side;
         break;
       case 38:
         if (this.power < 100) this.power++;
         break;
       case 39:
-        if (this.angle > 0) this.angle--;
+        if (
+          (this.angle > 0 && this.side == UTILS.SIDEA) ||
+          (this.angle < 180 && this.side == UTILS.SIDEB)
+        )
+          this.angle += -this.side;
         break;
       case 40:
         if (this.power > 0) this.power--;

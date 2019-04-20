@@ -1,4 +1,4 @@
-const Tanks = (function() {
+const TanksGame = (function() {
   function Tanks(canvasQuery) {
     this.CNVS = document.querySelector(canvasQuery);
     this.C = this.CNVS.getContext("2d");
@@ -15,7 +15,16 @@ const Tanks = (function() {
       this.objectsToAnimate.push(this.playerB);
       this.actualPlayer = this.playerA;
 
-      window.addEventListener("keydown", this.actualPlayer.aimAndFire);
+      window.addEventListener("keydown", event => {
+        this.actualPlayer.aimAndFire(event, (angle, power) => {
+          console.log("Firing", angle, power);
+          this.objectsToAnimate.push(
+            new Shot(this.C, angle, power, this.actualPlayer)
+          );
+          this.actualPlayer =
+            this.actualPlayer == this.playerA ? this.playerB : this.playerA;
+        });
+      });
     };
 
     this.animate = function() {

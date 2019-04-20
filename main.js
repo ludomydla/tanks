@@ -1,3 +1,3 @@
-let game = new Tanks("canvas");
+let game = new TanksGame("canvas");
 game.init();
 game.animate();
