@@ -1,12 +1,16 @@
 const UTILS = {
   SIDEA: 1,
   SIDEB: -1,
-  STAGE_FLY: 1,
-  STAGE_BOOM: 2,
-  STAGE_TRACE: 3,
+  STAGE_1_FLY: 1,
+  STAGE_2_BOOM: 2,
+  STAGE_3_TRACE: 3,
   POWER_COEF: 0.2,
   GRAVITY_COEF: 0.2,
-  AIR_RESISTANT_COEF: 0.05,
+  AIR_RESISTANT_COEF: 0.98,
+  WIDTH: 320,
+  HEIGHT: 200,
+  VALID_AREA_OFFSET: 20,
+  POINTS_LIMIT_COUNT: 210,
   getRadiansFromDeg: function(deg) {
     return (deg / 180) * Math.PI;
   },

@@ -7,8 +7,8 @@ const TanksGame = (function() {
     this.playerB = undefined;
 
     this.init = function() {
-      this.CNVS.width = 320;
-      this.CNVS.height = 200;
+      this.CNVS.width = UTILS.WIDTH;
+      this.CNVS.height = UTILS.HEIGHT;
       this.playerA = new Tank(this.C, 50, 130, UTILS.SIDEA);
       this.playerB = new Tank(this.C, 270, 130, UTILS.SIDEB);
       this.objectsToAnimate.push(this.playerA);
