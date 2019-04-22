@@ -1,7 +1,7 @@
 const Shot = function(C, ang, pow, tank) {
   this.angle = ang;
   this.power = pow;
-  this.state = UTILS.STAGE_FLY;
+  this.state = UTILS.STAGE_1_FLY;
   this.side = tank.side;
   this.points = [];
   [this.xdiff, this.ydiff] = UTILS.getAnglePowerDiff(
@@ -46,11 +46,11 @@ const Shot = function(C, ang, pow, tank) {
         this.state = UTILS.STAGE_3_TRACE;
       }
     }
-    if ((this.state = UTILS.STAGE_2_BOOM)) {
+    if (this.state == UTILS.STAGE_2_BOOM) {
       this.drawFlightPath();
-      // TODO - animate explosion
+      // TODO - animate explosion and move to stage 3
     }
-    if ((this.state = UTILS.STAGE_3_TRACE)) {
+    if (this.state == UTILS.STAGE_3_TRACE) {
       this.drawFlightPath();
     }
   };
