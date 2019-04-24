@@ -5,12 +5,15 @@ const TanksGame = (function() {
     this.objectsToAnimate = [];
     this.playerA = undefined;
     this.playerB = undefined;
+    this.terrain = undefined;
 
     this.init = function() {
       this.CNVS.width = UTILS.WIDTH;
       this.CNVS.height = UTILS.HEIGHT;
+      this.terrain = new Terrain(this.C);
       this.playerA = new Tank(this.C, 50, 130, UTILS.SIDEA);
       this.playerB = new Tank(this.C, 270, 130, UTILS.SIDEB);
+      this.objectsToAnimate.push(this.terrain);
       this.objectsToAnimate.push(this.playerA);
       this.objectsToAnimate.push(this.playerB);
       this.actualPlayer = this.playerA;

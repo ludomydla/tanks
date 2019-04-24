@@ -12,6 +12,8 @@ const UTILS = {
   VALID_AREA_OFFSET: 20,
   POINTS_LIMIT_COUNT: 210,
   DAMAGE_RADIUS: 10,
+  TERRAIN_GEN_ITERATIONS: 6,
+  TERRAIN_SCATTER_COEF: 0.6,
   getRadiansFromDeg: function(deg) {
     return (deg / 180) * Math.PI;
   },
@@ -29,5 +31,11 @@ const UTILS = {
   },
   isCollision: function(coordsA, coordsB) {
     return this.pointDistance(coordsA, coordsB) <= this.DAMAGE_RADIUS;
+  },
+  midPointHeight: function(heightA, heightB, scatterLevel) {
+    let center = (heightA + heightB) / 2;
+    let scatter =
+      this.HEIGHT * Math.pow(this.TERRAIN_SCATTER_COEF, scatterLevel);
+    return center + (Math.random() - 0.5) * scatter;
   }
 };
