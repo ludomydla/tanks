@@ -17,9 +17,14 @@ const TanksGame = (function() {
 
       window.addEventListener("keydown", event => {
         this.actualPlayer.aimAndFire(event, (angle, power) => {
-          console.log("Firing", angle, power);
           this.objectsToAnimate.push(
-            new Shot(this.C, angle, power, this.actualPlayer)
+            new Shot(
+              this.C,
+              angle,
+              power,
+              this.actualPlayer,
+              this.actualPlayer == this.playerA ? this.playerB : this.playerA
+            )
           );
           this.actualPlayer =
             this.actualPlayer == this.playerA ? this.playerB : this.playerA;

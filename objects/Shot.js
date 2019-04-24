@@ -1,20 +1,21 @@
-const Shot = function(C, ang, pow, tank) {
+const Shot = function(C, ang, pow, meTank, youTank) {
   this.angle = ang;
   this.power = pow;
   this.state = UTILS.STAGE_1_FLY;
-  this.side = tank.side;
+  this.side = meTank.side;
   this.points = [];
   [this.xdiff, this.ydiff] = UTILS.getAnglePowerDiff(
     pow * UTILS.POWER_COEF,
     ang,
     this.side
   );
-  this.points.push(tank.shotOrigin);
+  this.points.push(meTank.shotOrigin);
+  let boomAnimCount = 0;
 
   this.drawFlightPath = function() {
-    // Trace points you got
+    // Trace points you have
     C.beginPath();
-    C.moveTo(tank.shotOrigin[0], tank.shotOrigin[1]);
+    C.moveTo(meTank.shotOrigin[0], meTank.shotOrigin[1]);
     this.points.forEach(([x, y]) => {
       C.lineTo(x, y);
     });
@@ -41,15 +42,33 @@ const Shot = function(C, ang, pow, tank) {
         this.ydiff += UTILS.GRAVITY_COEF;
         this.xdiff *= UTILS.AIR_RESISTANT_COEF;
         this.points.push([lx + this.xdiff, ly + this.ydiff]);
-        // TODO - make collision detection and move to stage 2 boom
+        if (
+          UTILS.isCollision(
+            [lx + this.xdiff, ly + this.ydiff],
+            [youTank.x + 10, youTank.y + 1] // accounted for tank drawing in left corner
+          )
+        ) {
+          this.state = UTILS.STAGE_2_BOOM;
+        }
       } else {
         this.state = UTILS.STAGE_3_TRACE;
       }
     }
+
     if (this.state == UTILS.STAGE_2_BOOM) {
       this.drawFlightPath();
-      // TODO - animate explosion and move to stage 3
+      if (boomAnimCount <= UTILS.DAMAGE_RADIUS) {
+        let boomCenter = this.points[this.points.length - 1];
+        C.beginPath();
+        C.arc(boomCenter[0], boomCenter[1], boomAnimCount, 0, 2 * Math.PI);
+        C.fillStyle = "#f00";
+        C.fill();
+        boomAnimCount++;
+      } else {
+        this.state = UTILS.STAGE_3_TRACE;
+      }
     }
+
     if (this.state == UTILS.STAGE_3_TRACE) {
       this.drawFlightPath();
     }
