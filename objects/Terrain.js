@@ -19,10 +19,10 @@ const Terrain = function(C) {
     (acc, curVal) => Math.max(acc, curVal[1]),
     0
   );
-  console.log("LP", lowestPoint);
   let offset = UTILS.HEIGHT - 20 - lowestPoint;
-  console.log("OFFST", offset);
   this.points = this.points.map(point => [point[0], point[1] + offset]);
+  this.points.unshift([0, UTILS.HEIGHT]);
+  this.points.push([UTILS.WIDTH, UTILS.HEIGHT]);
 
   this.draw = function() {
     C.beginPath();
@@ -30,8 +30,9 @@ const Terrain = function(C) {
     this.points.forEach(([x, y]) => {
       C.lineTo(x, y);
     });
-    C.strokeStyle = "#888";
-    C.stroke();
+    C.closePath();
+    C.fillStyle = "#540";
+    C.fill();
   };
 
   this.update = function() {
