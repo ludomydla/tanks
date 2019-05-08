@@ -1,4 +1,4 @@
-const Shot = function(C, ang, pow, meTank, youTank) {
+const Shot = function(C, ang, pow, meTank, youTank, terrain) {
   this.angle = ang;
   this.power = pow;
   this.state = UTILS.STAGE_1_FLY;
@@ -36,16 +36,22 @@ const Shot = function(C, ang, pow, meTank, youTank) {
         this.points.length < UTILS.POINTS_LIMIT_COUNT &&
         this.points[this.points.length - 1][0] > -UTILS.VALID_AREA_OFFSET &&
         this.points[this.points.length - 1][0] <
-          UTILS.WIDTH + UTILS.VALID_AREA_OFFSET
+          UTILS.WIDTH + UTILS.VALID_AREA_OFFSET &&
+        this.points[this.points.length - 1][1] <
+          UTILS.HEIGHT + UTILS.VALID_AREA_OFFSET
       ) {
         let [lx, ly] = this.points[this.points.length - 1];
         this.ydiff += UTILS.GRAVITY_COEF;
         this.xdiff *= UTILS.AIR_RESISTANT_COEF;
         this.points.push([lx + this.xdiff, ly + this.ydiff]);
         if (
-          UTILS.isCollision(
+          UTILS.isTankCollision(
             [lx + this.xdiff, ly + this.ydiff],
             [youTank.x + 10, youTank.y + 1] // accounted for tank drawing in left corner
+          ) ||
+          UTILS.isTerrainCollision(
+            [lx + this.xdiff, ly + this.ydiff],
+            terrain.points
           )
         ) {
           this.state = UTILS.STAGE_2_BOOM;

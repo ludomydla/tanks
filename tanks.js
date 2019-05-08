@@ -36,7 +36,8 @@ const TanksGame = (function() {
               angle,
               power,
               this.actualPlayer,
-              this.actualPlayer == this.playerA ? this.playerB : this.playerA
+              this.actualPlayer == this.playerA ? this.playerB : this.playerA,
+              this.terrain
             )
           );
           this.actualPlayer =
@@ -60,3 +61,7 @@ const TanksGame = (function() {
 
   return Tanks;
 })();
+
+let game = new TanksGame("canvas");
+game.init();
+game.animate();

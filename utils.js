@@ -14,6 +14,9 @@ const UTILS = {
   DAMAGE_RADIUS: 10,
   TERRAIN_GEN_ITERATIONS: 6,
   TERRAIN_SCATTER_COEF: 0.6,
+  TERRAIN_POINTS_DISTANCE: function() {
+    return this.WIDTH / Math.pow(2, this.TERRAIN_GEN_ITERATIONS);
+  },
   getRadiansFromDeg: function(deg) {
     return (deg / 180) * Math.PI;
   },
@@ -29,8 +32,33 @@ const UTILS = {
         Math.pow(coordsA[1] - coordsB[1], 2)
     );
   },
-  isCollision: function(coordsA, coordsB) {
+  isTankCollision: function(coordsA, coordsB) {
     return this.pointDistance(coordsA, coordsB) <= this.DAMAGE_RADIUS;
+  },
+  isTerrainCollision: function(shotCoords, points) {
+    let closestTerrainPoints = points.filter(coords => {
+      let distanceX = Math.abs(coords[0] - shotCoords[0]);
+      return distanceX < this.TERRAIN_POINTS_DISTANCE();
+    });
+    //console.log(closestTerrainPoints);
+    if (closestTerrainPoints.length === 2) {
+      let terrainLevelY =
+        closestTerrainPoints[0][1] +
+        ((closestTerrainPoints[1][1] - closestTerrainPoints[0][1]) /
+          this.TERRAIN_POINTS_DISTANCE()) *
+          (shotCoords[0] - closestTerrainPoints[0][0]);
+      if (shotCoords[1] - terrainLevelY > 0) return true;
+      else return false;
+    }
+
+    // return points.some(coords => {
+    //   if (this.isCollision(shotCoords, coords)) {
+    //     console.log(shotCoords);
+    //     console.log(coords);
+    //     return true;
+    //   }
+    // });
+    //return false;
   },
   midPointHeight: function(heightA, heightB, scatterLevel) {
     let center = (heightA + heightB) / 2;
